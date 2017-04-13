@@ -22,6 +22,28 @@ module.exports = function(opts, cb) {
   };
 };
 
+if (typeof Object.assign != 'function') {
+  Object.assign = function(target) {
+    'use strict';
+    if (target == null) {
+      throw new TypeError('Cannot convert undefined or null to object');
+    }
+
+    target = Object(target);
+    for (var index = 1; index < arguments.length; index++) {
+      var source = arguments[index];
+      if (source != null) {
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+    }
+    return target;
+  };
+}
+
 function onClick(router, opts, cb) {
   function which(e) {
     e = e || window.event;
@@ -79,7 +101,7 @@ function onClick(router, opts, cb) {
     if (toRouteState) {
       e.preventDefault();
       var name = toRouteState.name;
-      var params = getParams(el.href);
+      var queryParams = getParams(el.href);
 
       var finalOpts;
       if (typeof opts === 'function') {
@@ -87,7 +109,7 @@ function onClick(router, opts, cb) {
       } else {
         finalOpts = opts;
       }
-
+      var params = Object.assign({}, toRouteState.params, queryParams);
       router.navigate(name, params, finalOpts, cb);
     }
   }
