@@ -102,14 +102,13 @@ function onClick(router, opts, cb) {
       e.preventDefault();
       var name = toRouteState.name;
       var queryParams = getParams(el.href);
-
+      var params = Object.assign({}, toRouteState.params, queryParams);
       var finalOpts;
       if (typeof opts === 'function') {
         finalOpts = opts(name, params);
       } else {
         finalOpts = opts;
       }
-      var params = Object.assign({}, toRouteState.params, queryParams);
       router.navigate(name, params, finalOpts, cb);
     }
   }
