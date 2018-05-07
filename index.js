@@ -74,7 +74,6 @@ function onClick(router, opts, cb) {
     }
 
     return function onclick(e) {
-        debugger;
         if (1 !== which(e)) return;
 
         if (e.metaKey || e.ctrlKey || e.shiftKey) return;
